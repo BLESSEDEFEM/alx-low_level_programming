@@ -3,6 +3,7 @@
 
 size_t looped_listint_len(const listint_t *head);
 size_t print_listint_safe(const listint_t *head);
+
 /**
  * looped_listint_len - Counts the number of unique nodes
  * in a looped listint_t linked list.
@@ -11,39 +12,46 @@ size_t print_listint_safe(const listint_t *head);
  * Return: If the list is not looped - 0.
  * Otherwise - the number of unique nodes in the list.
  */
-
 size_t looped_listint_len(const listint_t *head)
 {
-	const listint_t *slwptr = head, *fstptr = head;
-	size_t nodes = 0;
+	const listint_t *slwptr, *fstptr;
+	size_t nodes = 1;
 
-	if (!head)
-		return (nodes);
+	if (!head || !head->next)
+		return (0);
 
-	do {
-		if (!fstptr || !fstptr->next)
-			return (0);
+	slwptr = head->next;
+	fstptr = (head->next)->next;
 
-		slwptr = slwptr->next;
-		fstptr = fstptr->next->next;
-
-	} while (slwptr != fstptr);
-
-	fstptr = head;
-	while (slwptr != fstptr)
+	while (fstptr)
 	{
-		nodes++;
+		if (slwptr == fstptr)
+		{
+			slwptr = head;
+			while (slwptr != fstptr)
+			{
+				nodes++;
+				slwptr = slwptr->next;
+				fstptr = fstptr->next;
+			}
+
+			slwptr = slwptr->next;
+			while (slwptr != fstptr)
+			{
+				nodes++;
+				slwptr = slwptr->next;
+			}
+
+			return (nodes);
+		}
+
 		slwptr = slwptr->next;
-		fstptr = fstptr->next;
+		fstptr = (fstptr->next)->next;
 	}
 
-	do {
-		nodes++;
-		fstptr = fstptr->next;
-	} while (slwptr != fstptr);
-
-	return (nodes);
+	return (0);
 }
+
 /**
  * print_listint_safe - Prints a listint_t list safely.
  * @head: A pointer to the head of the listint_t list.
@@ -57,7 +65,7 @@ size_t print_listint_safe(const listint_t *head)
 
 	if (nodes == 0)
 	{
-		while (head)
+		for (; head != NULL; nodes++)
 		{
 			printf("[%p] %d\n", (void *)head, head->n);
 			head = head->next;
@@ -76,4 +84,3 @@ size_t print_listint_safe(const listint_t *head)
 
 	return (nodes);
 }
-
