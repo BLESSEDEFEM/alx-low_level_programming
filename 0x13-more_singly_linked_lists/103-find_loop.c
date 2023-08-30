@@ -1,5 +1,4 @@
 #include "lists.h"
-
 /**
  * find_listint_loop - finds the loop in a linked list
  * @head: linked list to search for
@@ -8,28 +7,27 @@
  */
 listint_t *find_listint_loop(listint_t *head)
 {
-    listint_t *temp = head;
-    listint_t *flash = head;
+	listint_t *temp = head;
+	listint_t *flash = head;
 
-    if (!head)
-        return NULL;
+	if (!head)
+		return (NULL);
 
-    for (; temp && flash && flash->next;)
-    {
-        flash = flash->next->next;
-        temp = temp->next;
-        if (flash == temp)
-        {
-            temp = head;
-            while (temp != flash)
-            {
-                temp = temp->next;
-                flash = flash->next;
-            }
-            return flash;
-        }
-    }
+	for (; temp && flash && flash->next;)
+	{
+		flash = flash->next->next;
+		temp = temp->next;
+		if (flash == temp)
+		{
+			temp = head;
+			while (temp != flash)
+			{
+				temp = temp->next;
+				flash = flash->next;
+			}
+			return (flash);
+		}
+	}
 
-    return NULL;
+	return (NULL);
 }
-
